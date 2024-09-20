@@ -1,7 +1,7 @@
 # MacOS-Network-Switcher
 Script to prioritize network interfaces based on availability.
 
-Usage: ./reorder_interfaces.sh -w <wired_interface> -f <wifi_interface> [-v]
+Usage: ./MacOS-Network-Switcher.sh -w <wired_interface> -f <wifi_interface> [-v]
 
 Options:
   -w  Specify the name of the wired interface (e.g., 'USB 10/100/1000 LAN')

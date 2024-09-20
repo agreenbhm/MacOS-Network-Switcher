@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>Label</key>
+    <string>com.agreenbhm.macos-network-switcher</string>
+
+    <!-- Path to your script -->
+    <key>ProgramArguments</key>
+    <array>
+        <string>/usr/local/bin/MacOS-Network-Switcher.sh</string>
+        <string>-w</string>
+        <string>USB 10/100/1000 LAN</string>
+        <string>-f</string>
+        <string>Wi-Fi</string>
+    </array>
+
+    <!-- Run as root (required for networksetup commands) -->
+    <key>UserName</key>
+    <string>root</string>
+
+    <!-- Run the script on boot -->
+    <key>RunAtLoad</key>
+    <true/>
+
+    <key>StandardOutPath</key>
+    <string>/var/log/macos-network-switcher.log</string>
+    <key>StandardErrorPath</key>
+    <string>/var/log/macos-network-switcher.log</string>
+
+</dict>
+</plist>

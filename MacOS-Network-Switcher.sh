@@ -31,6 +31,13 @@ validate_interface() {
     fi
 }
 
+# Function to check if an interface is active
+check_interface_active() {
+    local interface_name="$1"
+    networksetup -getnetworkserviceenabled "$interface_name" | grep -q "Enabled"
+    return $?  # Returns 0 if active, 1 if inactive
+}
+
 # Parse command-line arguments
 while getopts "w:f:vh" opt; do
     case $opt in
@@ -156,6 +163,13 @@ check_wifi_connection() {
 while true; do
     # Reset log cache at the beginning of each iteration
     log_cache=""
+
+    check_interface_active "$WIRED_INTERFACE"
+    if [ $? -ne 0 ]; then
+        log "$WIRED_INTERFACE is disabled. Skipping this iteration."
+        sleep 5
+        continue
+    fi
 
     # Check if Wi-Fi is connected before proceeding
     check_wifi_connection

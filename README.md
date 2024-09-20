@@ -1,4 +1,13 @@
 # MacOS-Network-Switcher
+
+## Instructions: 
+1. Save the script to `/usr/local/bin/MacOS-Network-Switcher.sh`
+2. Edit the plist file to reflect the names of the interfaces to monitor.
+3. Save the plist file to `/Library/LaunchDaemons/com.agreenbhm.macos-network-switcher.plist`
+4. Enable and launch the service: `sudo launchctl load /Library/LaunchDaemons/com.agreenbhm.macos-network-switcher.plist`
+
+---
+
 Script to prioritize network interfaces based on availability.
 
 Usage: ./MacOS-Network-Switcher.sh -w <wired_interface> -f <wifi_interface> [-v]

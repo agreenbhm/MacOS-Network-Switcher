@@ -13,6 +13,8 @@
         <string>USB 10/100/1000 LAN</string>
         <string>-f</string>
         <string>Wi-Fi</string>
+        <string>-t</string>
+        <string>60</string>
     </array>
 
     <!-- Run as root (required for networksetup commands) -->

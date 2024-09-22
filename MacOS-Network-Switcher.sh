@@ -41,11 +41,11 @@ check_interface_active() {
 }
 
 # Parse command-line arguments
-while getopts "w:f:vh" opt; do
+while getopts "w:f:t:vh" opt; do
     case $opt in
         w) WIRED_INTERFACE="$OPTARG" ;;
         f) WIFI_INTERFACE="$OPTARG" ;;
-        v) CHECK_INTERVAL=5 ;;
+        t) CHECK_INTERVAL="$OPTARG" ;;
         v) VERBOSE=1 ;;
         h) show_help ;;
         *) show_help ;;

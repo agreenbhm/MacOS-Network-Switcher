@@ -7,7 +7,7 @@ CHECK_INTERVAL=60
 
 # Help message
 show_help() {
-    echo "Usage: $0 -w <wired_interface> -f <wifi_interface> [-t <check_interval] [-v]"
+    echo "Usage: $0 -w <wired_interface> -f <wifi_interface> [-t check_interval] [-v]"
     echo
     echo "Options:"
     echo "  -w  Specify the name of the wired interface (e.g., 'USB 10/100/1000 LAN')"

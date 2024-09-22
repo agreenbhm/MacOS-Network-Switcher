@@ -3,22 +3,24 @@
 WIRED_INTERFACE=""
 WIFI_INTERFACE=""
 VERBOSE=0
+CHECK_INTERVAL=60
 
 # Help message
 show_help() {
-    echo "Usage: $0 -w <wired_interface> -f <wifi_interface> [-v]"
+    echo "Usage: $0 -w <wired_interface> -f <wifi_interface> [-t <check_interval] [-v]"
     echo
     echo "Options:"
     echo "  -w  Specify the name of the wired interface (e.g., 'USB 10/100/1000 LAN')"
     echo "  -f  Specify the name of the Wi-Fi interface (e.g., 'Wi-Fi')"
+    echo "  -t  Specify the number of seconds between checks (default is 60)"
     echo "  -v  Enable verbose mode (outputs all messages immediately)"
     echo "  -h  Display this help message"
     echo
     echo "This script monitors the network interfaces and dynamically switches between"
     echo "a wired and wireless interface depending on their status and availability."
     echo "It attempts to prioritize the wired connection if available and active."
-    echo "If both interfaces are on the same subnet, it will ping the router and"
-    echo "decide which interface should take priority."
+    echo "If both interfaces are on the same subnet, it will ping the router to ensure"
+    echo "connectivity and then decide which interface should take priority."
     exit 0
 }
 
@@ -43,6 +45,7 @@ while getopts "w:f:vh" opt; do
     case $opt in
         w) WIRED_INTERFACE="$OPTARG" ;;
         f) WIFI_INTERFACE="$OPTARG" ;;
+        v) CHECK_INTERVAL=5 ;;
         v) VERBOSE=1 ;;
         h) show_help ;;
         *) show_help ;;
@@ -167,14 +170,14 @@ while true; do
     check_interface_active "$WIRED_INTERFACE"
     if [ $? -ne 0 ]; then
         log "$WIRED_INTERFACE is disabled. Skipping this iteration."
-        sleep 5
+        sleep $CHECK_INTERVAL
         continue
     fi
 
     # Check if Wi-Fi is connected before proceeding
     check_wifi_connection
     if [ $? -ne 0 ]; then
-        sleep 5
+        sleep $CHECK_INTERVAL
         continue
     fi
 
@@ -199,7 +202,7 @@ while true; do
         wired_mask=$(networksetup -getinfo "$WIRED_INTERFACE" | grep "^Subnet mask:" | awk '{print $3}')
         if [ -z "$wired_ip" ] || is_apipa "$wired_ip"; then
             log "Failed to obtain a valid IP for $WIRED_INTERFACE after resetting. Skipping."
-            sleep 5
+            sleep $CHECK_INTERVAL
             continue
         else
             log "Successfully obtained a valid IP for $WIRED_INTERFACE: $wired_ip"
@@ -213,7 +216,7 @@ while true; do
     # Ensure we skip unnecessary commands by checking if the interfaces are on the same subnet
     if [ -z "$wired_ip" ] || [ -z "$wifi_ip" ] || [ -z "$wired_mask" ] || [ -z "$wifi_mask" ]; then
         log "One of the interfaces is missing a valid IP or subnet mask. Skipping."
-        sleep 5
+        sleep $CHECK_INTERVAL
         continue
     fi
 
@@ -248,5 +251,5 @@ while true; do
     fi
 
     # Sleep for a few seconds before rechecking
-    sleep 5
+    sleep $CHECK_INTERVAL
 done
